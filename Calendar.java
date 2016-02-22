@@ -9,14 +9,13 @@ public class Calendar
 {
 
 	private String version; 						//version data field
-	private String classification; 					//version data field
+	private String classification; 						//version data field
 	private String comment; 						//comment data field
 	private String location;					 	//geo location data field
 	private String DSTART; 							//date time start data field
 	private String DEND; 							//date time end data field
 	private String timeZone; 						//timezone data field
-	private final static String DATE = "yyyyMMdd"; 	//Date format data field
-	private final static String TIME = "HHmmss"; 	//Time format data field
+	private final static String DATETIME_FORMAT = "yyyyMMdd' T "HHmmss'"; 	//Date/Time formatting data field
 	
 	/*
 	 * Calendar construction method
