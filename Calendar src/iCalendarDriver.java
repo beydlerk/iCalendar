@@ -11,104 +11,47 @@ import java.util.*;
 import java.io.*;
 import java.text.*;
 
+//.ics FILE Paramters:
+/*
+*VERSION: 2.0
+*CLASSIFICATION:
+*COMMENT:
+*LOCATION:
+*DSTART:
+*DEND:
+*TIMEZONE:
+*/
 
 public class iCalendarDriver 
 {
  
 	public static void main(String[] args) 
 	{
-		/**
-		 * Guys, something tells me that we wont get very far by putting all of our driver stuff into the main.
-		 * We should probably try and break all of this up eventually into separate methods and simply use the main 
-		 * to call upon them when necessary...it would be a better option...
-		 */
-		
-		
-		Scanner input = new Scanner(System.in); //for UI interaction
-		Calendar calendar = new Calendar(); //creates calendar object
+		/*
+		* Data fields for main() driver
+		*/
+		Scanner scanner = new Scanner(System.in); //for UI interaction by retriving input from user's keyboard
+		Calendar calendar = new Calendar(); //creates a calendar object
 		String file; //prepares to create the .ics file
-		String user; //used for entering user data
-		boolean numOnly = false; //marks if number only format isnt followed
-		
-		//System.out.println("What would you like to your call your Calendar event file?:");
-		//This will be the name of the .ics file generated from this program at the end. :)
-		
-		//FOR GETTING CLASSIFICATION DATA
-		//while(!input.equalsIgnoreCase(Private) || !input.equalsIgnoreCase(Public) || !input.equalsIgnoreCase(Confidential))
-		//{
-		//System.out.println("What is the classification of the event? Is it a public, private, or a confidential event?:")
-		//user = input.nextLine();
-	//	}
-		//Calendar.setClassification(user);
-		
-		 //FOR GETTING COMMENT DATA
-		 System.out.println("Please enter a brief description about this event:");
-		 user = input.nextLine();
-		// Calendar.setComment(user);
-		 
-		 //FOR GETTING LOCATION DATA
-		// System.out.println("What is the location of this event?:");
-		// user = input.nextLine();
-		// Calendar.setLocation(user);
-		 
-		 
-		 //FOR GETTING START DATE
-		while(numOnly==false){
-			//while loop to ensure number format
-		 System.out.println("Please enter the day that you want this event to start at: (yyyymmdd)");//Dont know if this is needed as I didnt see a function call for it, but i saw the variable for it so I went ahead and added a call
-		 user = input.nextLine(); 
-		 numOnly = user.matches("[0-9]+");//returns true if string is all numbers
-		 if(numOnly==true){
-			//Calendar.setDate(user);
-		 }else{
-			System.out.println("ERROR: Please follow the specific format within the parentheses!");
-		 }
-		}
-	        numOnly=false;//allows for number format test to be reused
-	        while(numOnly==false){
-	        	//while loop to ensure number format
-		 System.out.println("Please enter this event's starting time: (HHmmss)");//Dont know if this is needed as I didnt see a function call for it, but i saw the variable for it so I went ahead and added a call
-		 user = input.nextLine();
-		 numOnly = user.matches("[0-9]+");//returns true if string is all numbers
-		 if(numOnly==true){
-		//	Calendar.setTime(user);
-		 }else{
-			System.out.println("ERROR: Please follow the specific format within the parentheses");
-		 }
-	        }
-	        
-	        
-	        //FOR GETTING END DATE & TIME
-		while(numOnly==false){
-			//while loop to ensure number format
-		 System.out.println("Please enter the day that you want this event to end at: (yyyymmdd)");//Dont know if this is needed as I didnt see a function call for it, but i saw the variable for it so I went ahead and added a call
-		 user = input.nextLine(); 
-		 numOnly = user.matches("[0-9]+");//returns true if string is all numbers
-		 if(numOnly==true){
-		//	Calendar.setDate(user);
-		 }else{
-			System.out.println("ERROR: Please follow the specific format within the parentheses!");
-		 }
-		}
-	        numOnly=false;//allows for number format test to be reused
-	        while(numOnly==false){
-	        	//while loop to ensure number format
-		 System.out.println("Please enter this event's ending time: (HHmmss)");//Dont know if this is needed as I didnt see a function call for it, but i saw the variable for it so I went ahead and added a call
-		 user = input.nextLine();
-		 numOnly = user.matches("[0-9]+");//returns true if string is all numbers
-		 if(numOnly==true){
-		//	Calendar.setTime(user);
-		 }else{
-			System.out.println("ERROR: Please follow the specific format within the parentheses!");
-		 }
-	        }
 	        
 	        /*
-	         *METHOD CALLS:
+	         * NECESSARY METHOD CALLS BELOW:
 	         */
-	         createFile(file, calendar);
-	}
-	        
+	         
+	         ////////////////////////////////////////////////////////////////////////
+	         file = getFile(scanner);		//To get the name of the file
+	         
+	         getClassification(scanner, calendar);  //To get the CLASSIFICATION field
+	         getComment(scanner, calendar); 	//To get the COMMENT field
+	         getLocation(scanner, calendar);	//To get the LOCATION field
+	         getDTStart(scanner, calendar);		//To get the DATETIMESTART field
+	         getDTEnd(scanner, calendar); 		//To get the DATETIMEEND field
+	         getTimeZone(scanner, calendar);	//To get the TIMEZONE field
+	         
+	         createFile(file, calendar);		//To finally create the .ics file with the data from the user
+	         ////////////////////////////////////////////////////////////////////////
+	         
+	}//close main()
 	        
 	/*
 	 * METHOD: User Interface for the user to give the file's name. (Appends .ics after it to make it Calendar readable.)
@@ -116,7 +59,7 @@ public class iCalendarDriver
 	 * @param the scanner
 	 * @return the .ics file
 	 */
-	public static String getFileName(Scanner scanner)
+	public static String getFile(Scanner scanner)
 	{
 		String file; //prepares to create the .ics file
 		String userInput; //used for entering user data
@@ -142,6 +85,112 @@ public class iCalendarDriver
 		  }
 		  return file;
 	}//close prepareFile method(Scanner)
+	
+	/*
+	 * METHOD: Gets CLASSIFICATION field from user
+	 * 
+	 * @param the scanner for user's input from keyboard
+	 * @param the calendar object
+	 */
+	public static void getClassification(Scanner scanner, Calendar calendar) 
+	{
+		String userInput;
+		//we can either put the user's input checker for the classification field here or in Calendar.java
+
+	        System.out.println("Is this a public, private, or a confidential event?:");
+	        
+	        //should probably set the user's input to lower case so that it can be properly understood when calling method
+	}
+	
+	/*
+	 * METHOD: Gets COMMENT field from user
+	 * 
+	 * @param the scanner for user's input from keyboard
+	 * @param the calendar object
+	 */
+	public static void getComment(Scanner scanner, Calendar calendar) 
+	{
+		String userInput; //to represent userInput and allow for String manipulation
+		
+		System.out.println("Please enter a brief description about this event:");
+		
+		//need to setComment(userInput); after proper user input checking
+	}
+	
+	/*
+	 * METHOD: Gets LOCATION field from user
+	 * 
+	 * @param the scanner for user's input from keyboard
+	 * @param the calendar object
+	 */
+	public static void getLocation(Scanner scanner, Calendar calendar) 
+	{
+		String userInput; //to represent user input - for String manipulation
+		
+		System.out.println("Where will this event be located?:");
+    		userInput = scanner.nextLine().trim(); //reads user's input directly from keyboard - trims off whitespace
+
+		//calls .setLocation(String) from Calendar.java to set user's input to that object's method
+	 	calendar.setLocation(userInput);
+	}
+	
+	/*
+	 * METHOD: Gets DATE TIME START field from user
+	 * 
+	 * @param the scanner for user's input from keyboard
+	 * @param the calendar object
+	 */
+	public static void getDTStart(Scanner scanner, Calendar calendar) 
+	{
+		String userInput; //to represent user input - for String manipulation
+		String dateTimeFormat;
+		boolean checker;
+		
+		System.out.println("Please enter the day that you want this event to start at: (yyyymmdd)");
+		//user input + checking
+		//call the necessary set method from DateStart
+		System.out.println("Please enter this event's starting time: (HHmmss)");
+		//user input + checking
+		//call the necessary set method from DateStart
+	}
+	
+	/*
+	 * METHOD: Gets DATE TIME END field from user
+	 * 
+	 * @param the scanner for user's input from keyboard
+	 * @param the calendar object
+	 */
+	public static void getDTEnd(Scanner scanner, Calendar calendar) 
+	{
+		String userInput; //to represent user input - for String manipulation
+		String dateTimeFormat;
+		boolean checker;
+		
+		System.out.println("Please enter the day that you want this event to end at: (yyyymmdd)");
+		//user input + checking
+		//call the necessary set method from DateEnd
+		System.out.println("Please enter this event's ending time: (HHmmss)");
+		//user input + checking
+		//call the necessary set method from DateEnd
+	}
+	
+	/*
+	 * METHOD: Gets TIMEZONE field from user
+	 * 
+	 * @param the scanner for user's input from keyboard
+	 * @param the calendar object
+	 */
+	public static void getTimeZone(Scanner scanner, Calendar calendar) 
+	{
+		String userInput;
+		
+		System.out.println("What is the timezone (GMT) for this event?:");
+		//read in user's input
+		//check input to see it is appropriate
+		//we might actually need an array which contains all of the possible timezones to show to the user...
+		
+		//call the set.TimeZone() method from Calendar when finished with this method
+	}
 	
  /**
    * void method to create our .ics file.
