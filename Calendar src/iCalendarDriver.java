@@ -44,8 +44,8 @@ public class iCalendarDriver
 	         getClassification(scanner, calendar);  //To get the CLASSIFICATION field
 	         getComment(scanner, calendar); 	//To get the COMMENT field
 	         getLocation(scanner, calendar);	//To get the LOCATION field
-	         getDTStart(scanner, calendar);		//To get the DATETIMESTART field
-	         getDTEnd(scanner, calendar); 		//To get the DATETIMEEND field
+	         getDateTimeStart(scanner, calendar);	//To get the DATETIMESTART field
+	         getDateTimeEnd(scanner, calendar); 	//To get the DATETIMEEND field
 	         getTimeZone(scanner, calendar);	//To get the TIMEZONE field
 	         
 	         createFile(file, calendar);		//To finally create the .ics file with the data from the user
@@ -140,7 +140,7 @@ public class iCalendarDriver
 	 * @param the scanner for user's input from keyboard
 	 * @param the calendar object
 	 */
-	public static void getDTStart(Scanner scanner, Calendar calendar) 
+	public static void getDateTimeStart(Scanner scanner, Calendar calendar) 
 	{
 		String userInput; //to represent user input - for String manipulation
 		String dateTimeFormat;
@@ -160,7 +160,7 @@ public class iCalendarDriver
 	 * @param the scanner for user's input from keyboard
 	 * @param the calendar object
 	 */
-	public static void getDTEnd(Scanner scanner, Calendar calendar) 
+	public static void getDateTimeEnd(Scanner scanner, Calendar calendar) 
 	{
 		String userInput; //to represent user input - for String manipulation
 		String dateTimeFormat;
