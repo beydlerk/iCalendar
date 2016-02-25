@@ -23,7 +23,7 @@ import javax.swing.*;
 *TIMEZONE:
 */
 
-public class iCalendarDriver 
+public class CalendarDriver 
 {
  
 	public static void main(String[] args) 
