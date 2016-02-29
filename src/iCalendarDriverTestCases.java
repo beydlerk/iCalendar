@@ -35,4 +35,12 @@ public class iCalendarDriverTestCases
 	assertEquals(“test.ics", CalendarDriver.getFile(inputTest1)); //see if the method can create a class with test.ics input
 	}
 
+	@Test
+	public final void testGetLocation() {
+		Calendar calendarLoc = new Calendar();
+		assertEquals(null,calendarLoc.getLocation());
+		assertNotEquals("Kuykendall",calendarLoc.getLocation());
+		assertNotEquals("Campus Center",calendarLoc.getLocation());
+	}
+
 }
