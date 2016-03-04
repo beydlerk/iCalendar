@@ -38,5 +38,55 @@ public class CalendarTestCases
 		assertNotEquals("3.0", calendarTest2.getVersion());
 	}
 
+	@Test
+	public final void testGetLocation() 
+	{
+		Calendar calendarTest3 = new Calendar();
+		assertEquals(null,calendarTest3.getLocation());
+	
+		assertNotEquals("Kuykendall",calendarTest3.getLocation());
+	}
+	
+	@Test
+	public final void testGetCommentary() 
+	{
+		Calendar calendarTest4 = new Calendar();
+
+		assertEquals(null, calendarTest4.getCommentary());
+	}
+	
+	@Test
+	public final void testGetDTSTART() 
+	{
+		Calendar calendarTest5 = new Calendar();
+		
+		assertEquals(null,calendarTest5.getDTSTART());
+	}
+	
+	@Test
+	public final void testGetDTEND() 
+	{
+		Calendar calendarTest6 = new Calendar();
+		
+		assertEquals(null,calendarTest6.getDTSTART());
+	}
+	
+	@Test
+	public final void testGetTimeZone() 
+	{
+		Calendar calendarTest8 = new Calendar();
+		
+		assertNull(calendarTest8.getTimeZone());
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public final void testInvalidExtension() 
+	{
+		Calendar calendarTest7 = new Calendar();
+		
+		calendarTest7.makeICS("test.txt"); //if it tries to be .txt, test = FAIL
+		
+	}
+
 	
 }
