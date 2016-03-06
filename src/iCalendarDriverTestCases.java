@@ -29,18 +29,11 @@ public class iCalendarDriverTestCases
 	}
 	
 	@Test
-	public final void testGetFile() 
-	{
-	Scanner inputTest1 = new Scanner(System.in); //creates test scanner to test input from user
-	assertEquals(“test.ics", CalendarDriver.getFile(inputTest1)); //see if the method can create a class with test.ics input
-	}
-
-	@Test
 	public final void testGetLocation() {
 		Calendar calendarLoc = new Calendar();
+		
+		
 		assertEquals(null,calendarLoc.getLocation());
-		assertNotEquals("Kuykendall",calendarLoc.getLocation());
-		assertNotEquals("Campus Center",calendarLoc.getLocation());
 	}
 
 }

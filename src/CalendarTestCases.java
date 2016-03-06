@@ -52,7 +52,7 @@ public class CalendarTestCases
 	{
 		Calendar calendarTest4 = new Calendar();
 
-		assertEquals(null, calendarTest4.getCommentary());
+		assertEquals(null, calendarTest4.getComment());
 	}
 	
 	@Test
@@ -60,7 +60,7 @@ public class CalendarTestCases
 	{
 		Calendar calendarTest5 = new Calendar();
 		
-		assertEquals(null,calendarTest5.getDTSTART());
+		assertEquals(null,calendarTest5.getDSTART());
 	}
 	
 	@Test
@@ -68,7 +68,7 @@ public class CalendarTestCases
 	{
 		Calendar calendarTest6 = new Calendar();
 		
-		assertEquals(null,calendarTest6.getDTSTART());
+		assertEquals(null,calendarTest6.getDEND());
 	}
 	
 	@Test
@@ -84,7 +84,7 @@ public class CalendarTestCases
 	{
 		Calendar calendarTest7 = new Calendar();
 		
-		calendarTest7.makeICS("test.txt"); //if it tries to be .txt, test = FAIL
+		calendarTest7.createICS("test.txt"); //if it tries to be .txt, test = FAIL
 		
 	}
 
