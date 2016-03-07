@@ -127,12 +127,23 @@ public class iCalendarDriver
 	public static void getLocation(Scanner scanner, Calendar calendar) 
 	{
 		String userInput; //to represent user input - for String manipulation
-		
-		System.out.println("Where will this event be located?:");
-    		userInput = scanner.nextLine().trim(); //reads user's input directly from keyboard - trims off whitespace
-
-		//calls .setLocation(String) from Calendar.java to set user's input to that object's method
-	 	calendar.setLocation(userInput);
+	System.out.println("Enter latitude degrees: (-90 to 90)");
+    		float latDeg = scanner.nextInt(); //reads user's input directly from keyboard - trims off whitespace
+    	System.out.println("Enter latitude minutes: (0 to 60)");
+    		float latMin = scanner.nextInt();
+    	System.out.println("Enter latitude seconds: (0 to 3600)");
+    		float latSec= scanner.nextInt();
+    	System.out.println("Enter longitude degrees: (-180 to 180)");
+    		float lonDeg= scanner.nextInt();
+    	System.out.println("Enter longitude minutes: (0 to 60)");
+    		float lonMin= scanner.nextInt();
+    	System.out.println("Enter longitude seconds: (0 to 3600)");
+    		float lonSec= scanner.nextInt();
+    	float latDec= latDeg+latMin/60+latSec/3600;
+    	float lonDec= lonDeg+lonMin/60+lonSec/3600;
+		System.out.println("GEO:"+latDec+";"+lonDec);//temp output line, will call method
+    	//calls .setLocation(String) from Calendar.java to set user's input to that object's method
+	 	//calendar.setLocation(userInput);
 	}
 	
 	/*
