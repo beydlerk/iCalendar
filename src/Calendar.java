@@ -123,7 +123,7 @@ public class Calendar
       		bw.newLine();
       		bw.write("DESCRIPTION:" + comment);
       		bw.newLine();
-      		bw.write("LOCATION:" + location);
+      		bw.write("GEO:" + location);
       		bw.newLine();
       		bw.write("DTSTART:20160224T194500Z"); // in GMT
       		bw.newLine();
