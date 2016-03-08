@@ -141,9 +141,9 @@ public class iCalendarDriver
     		float lonSec= scanner.nextInt();
     	float latDec= latDeg+latMin/60+latSec/3600;
     	float lonDec= lonDeg+lonMin/60+lonSec/3600;
-		System.out.println("GEO:"+latDec+";"+lonDec);//temp output line, will call method
+		userInput = latDec+";"+lonDec;//temp output line, will call method
     	//calls .setLocation(String) from Calendar.java to set user's input to that object's method
-	 	//calendar.setLocation(userInput);
+	 	calendar.setLocation(userInput);
 	}
 	
 	/*
