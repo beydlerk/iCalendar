@@ -17,6 +17,7 @@ public class Calendar
 	private String classification; 						//version data field
 	private String comment; 						//comment data field
 	private String location;					 	//geo location data field
+	private String GEO;
 	private String DSTART; 							//date time start data field
 	private String DEND; 							//date time end data field
 	private String timeZone; 						//timezone data field
@@ -61,6 +62,16 @@ public class Calendar
 
 	public void setLocation(String location) {
 		this.location = location;
+	}
+	public void setGEO(float lat, float lon) {
+		String latitude = String.valueOf(lat);
+		String longitude = String.valueOf(lon);
+		this.GEO = latitude;
+		this.GEO += ";";
+		this.GEO += longitude;
+	}
+	public String getGEO() {
+		return GEO;
 	}
 
 	public String getDSTART() {
@@ -123,11 +134,13 @@ public class Calendar
       		bw.newLine();
       		bw.write("DESCRIPTION:" + comment);
       		bw.newLine();
-      		bw.write("GEO:" + location);
+      		bw.write("LOCATION:" + location);
       		bw.newLine();
-      		bw.write("DTSTART:20160224T194500Z"); // in GMT
+      		bw.write("GEO:" + GEO);
       		bw.newLine();
-      		bw.write("DTEND:20160225T000000Z"); // in GMT
+      		bw.write("DTSTART:20160309T194500Z"); // in GMT
+      		bw.newLine();
+      		bw.write("DTEND:20160310T000000Z"); // in GMT
       		bw.newLine();
       		bw.write("TIMEZONE:Pacific/Honolulu"); //GMT -10:00
       		bw.newLine();

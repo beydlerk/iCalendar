@@ -45,6 +45,7 @@ public class iCalendarDriver
 	         getClassification(scanner, calendar);  //To get the CLASSIFICATION field
 	         getComment(scanner, calendar); 	//To get the COMMENT field
 	         getLocation(scanner, calendar);	//To get the LOCATION field
+	         getGEO(scanner, calendar);
 	         //getDateTimeStart(scanner, calendar);	//To get the DATETIMESTART field
 	         //getDateTimeEnd(scanner, calendar); 	//To get the DATETIMEEND field
 	         //getTimeZone(scanner, calendar);	//To get the TIMEZONE field
@@ -124,26 +125,65 @@ public class iCalendarDriver
 	 * @param the scanner for user's input from keyboard
 	 * @param the calendar object
 	 */
-	public static void getLocation(Scanner scanner, Calendar calendar) 
+	public static void getLocation(Scanner scanner, Calendar calendar)
 	{
-		String userInput; //to represent user input - for String manipulation
-	System.out.println("Enter latitude degrees: (-90 to 90)");
-    		float latDeg = scanner.nextInt(); //reads user's input directly from keyboard - trims off whitespace
-    	System.out.println("Enter latitude minutes: (0 to 60)");
-    		float latMin = scanner.nextInt();
-    	System.out.println("Enter latitude seconds: (0 to 3600)");
-    		float latSec= scanner.nextInt();
-    	System.out.println("Enter longitude degrees: (-180 to 180)");
-    		float lonDeg= scanner.nextInt();
-    	System.out.println("Enter longitude minutes: (0 to 60)");
-    		float lonMin= scanner.nextInt();
-    	System.out.println("Enter longitude seconds: (0 to 3600)");
-    		float lonSec= scanner.nextInt();
+		System.out.println("Please enter a location for this event:");
+		String userInput = scanner.nextLine();
+		calendar.setLocation(userInput);
+	}
+	public static void getGEO(Scanner scanner, Calendar calendar) 
+	{
+		float latDeg = -100;
+		float latMin = -100;
+		float latSec = -100;
+		float lonDeg = -200;
+		float lonMin = -100;
+		float lonSec = -100;
+		while (latDeg < -90 || latDeg > 90) {
+			System.out.println("Enter latitude degrees: (-90 to 90)");
+    		latDeg = scanner.nextInt(); //reads user's input directly from keyboard - trims off whitespace
+    		if (latDeg < -90 || latDeg > 90) {
+    			System.out.println("Invalid input!");
+    		}
+		}
+		while (latMin < -60 || latMin > 60) {
+			System.out.println("Enter latitude minutes: (-60 to 60)");
+    		latMin = scanner.nextInt();
+    		if (latMin < -60 || latMin > 60) {
+    			System.out.println("Invalid input!");
+    		}
+		}
+		while (latSec < -60 || latSec > 60) {
+			System.out.println("Enter latitude seconds: (-60 to 60)");
+    		latSec= scanner.nextInt();
+    		if (latSec < -60 || latSec > 60) {
+    			System.out.println("Invalid input!");
+    		}
+		}
+		while (lonDeg < -180 || lonDeg > 180) {
+			System.out.println("Enter longitude degrees: (-180 to 180)");
+    		lonDeg= scanner.nextInt();
+    		if (lonDeg < -180 || lonDeg > 180) {
+    			System.out.println("Invalid input!");
+    		}
+		}
+		while (lonMin < -60 || lonMin > 60) {
+			System.out.println("Enter longitude minutes: (-60 to 60)");
+    		lonMin= scanner.nextInt();
+    		if (lonMin < -60 || lonMin > 60) {
+    			System.out.println("Invalid input!");
+    		}
+		}
+		while (lonSec < -60 || lonSec > 60) {
+			System.out.println("Enter longitude seconds: (-60 to 60)");
+    		lonSec= scanner.nextInt();
+    		if (lonSec < -60 || lonSec > 60) {
+    			System.out.println("Invalid input!");
+    		}
+		}
     	float latDec= latDeg+latMin/60+latSec/3600;
     	float lonDec= lonDeg+lonMin/60+lonSec/3600;
-		userInput = latDec+";"+lonDec;//temp output line, will call method
-    	//calls .setLocation(String) from Calendar.java to set user's input to that object's method
-	 	calendar.setLocation(userInput);
+		calendar.setGEO(latDec, lonDec);
 	}
 	
 	/*
