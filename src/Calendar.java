@@ -149,9 +149,6 @@ public class Calendar
       		bw.write("DTSTART:" + DSTART); // in GMT
       		bw.newLine();
       		bw.write("DTEND:" + DEND); // in GMT
-      		bw.write("DTSTART:20160309T194500Z"); // in GMT
-      		bw.newLine();
-      		bw.write("DTEND:20160310T000000Z"); // in GMT
       		bw.newLine();
       		bw.write("TIMEZONE:Pacific/Honolulu"); //GMT -10:00
       		bw.newLine();
