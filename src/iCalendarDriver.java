@@ -8,6 +8,8 @@
 
 //Import Preprocesser Directives
 import java.util.*;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.*;
 import java.text.*;
 import javax.swing.*;
@@ -42,12 +44,13 @@ public class iCalendarDriver
 	         ////////////////////////////////////////////////////////////////////////
 	         file = getFile(scanner);		//To get the name of the file
 	         
+	         getEventname(scanner, calendar);
 	         getClassification(scanner, calendar);  //To get the CLASSIFICATION field
 	         getComment(scanner, calendar); 	//To get the COMMENT field
 	         getLocation(scanner, calendar);	//To get the LOCATION field
 	         getGEO(scanner, calendar);
-	         //getDateTimeStart(scanner, calendar);	//To get the DATETIMESTART field
-	         //getDateTimeEnd(scanner, calendar); 	//To get the DATETIMEEND field
+	         getDateTimeStart(scanner, calendar);	//To get the DATETIMESTART field
+	         getDateTimeEnd(scanner, calendar); 	//To get the DATETIMEEND field
 	         //getTimeZone(scanner, calendar);	//To get the TIMEZONE field
 	         
 	         createFile(file, calendar);		//To finally create the .ics file with the data from the user
@@ -64,29 +67,35 @@ public class iCalendarDriver
 	public static String getFile(Scanner scanner)
 	{
 		String file; //prepares to create the .ics file
-		String userInput; //used for entering user data
 		String appendICS; //used for properly appending .ics after the file's name
-		boolean numOnly = false; //marks if number only format isnt followed
 		
 		//prompts user for the name of the file
 		System.out.println("What would you like to your call your Calendar event file?:");
 		//This will be the name of the .ics file generated from this program at the end. :)
 		
 		//takes the file and trims the whitespace from it (if there's any whitespace)
-		 file = scanner.nextLine().trim();
+		file = scanner.nextLine().trim();
 		 
-		 //conditional if the file has nothing after its name
-      		if (file.lastIndexOf(".") == -1)
-      		//appends the ".ics" if it doesn't have it already
-		 file = file + ".ics";
-		  else 
-		  {
-		  appendICS = file.substring(file.lastIndexOf(".") + 1, file.length());
-		  if (!appendICS.equalsIgnoreCase("ics"))
-        	  file = file + ".ics";
-		  }
-		  return file;
-	}//close prepareFile method(Scanner)
+		//conditional if the file has nothing after its name
+		if (file.lastIndexOf(".") == -1)		//appends the ".ics" if it doesn't have it already
+			file = file + ".ics";
+		else 
+		{
+			appendICS = file.substring(file.lastIndexOf(".") + 1, file.length());
+			if (!appendICS.equalsIgnoreCase("ics"))
+				file = file + ".ics";
+		}
+		return file;
+	} //close prepareFile method(Scanner)
+	
+	public static void getEventname(Scanner scanner, Calendar calendar)
+	{
+		String userInput;
+		
+		System.out.println("Please enter the name of this event");
+		userInput = scanner.nextLine();
+		calendar.setEventname(userInput);
+	}
 	
 	/*
 	 * METHOD: Gets CLASSIFICATION field from user
@@ -96,12 +105,23 @@ public class iCalendarDriver
 	 */
 	public static void getClassification(Scanner scanner, Calendar calendar) 
 	{
+		
 		//popup window with the 3 event choices. 
 		//stores choice and sets it as the classification
 		Object[] choice = {"public","private","confidential"};
-		String user = (String)JOptionPane.showInputDialog(null, "Is this a public, private, or a confidential event?","Customized Dialog",JOptionPane.PLAIN_MESSAGE, null, choice,"public");
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int width = (int) screenSize.getWidth();
+		int height = (int) screenSize.getHeight();
+		JFrame top = null; //dummy JFram
+		if (top == null) {
+			top = new JFrame();
+		}
+		top.setVisible(true);
+		top.setAlwaysOnTop(true);
+		top.setLocation(width/2,height/2);
+		String user = (String)JOptionPane.showInputDialog(top, "Is this a public, private, or a confidential event?","Classification Selection",JOptionPane.PLAIN_MESSAGE, null, choice,"public");
+		top.dispose();
 		calendar.setClassification(user);
-	        //Great job here! The UI is perfect!
 	}
 	
 	/*
@@ -113,7 +133,7 @@ public class iCalendarDriver
 	public static void getComment(Scanner scanner, Calendar calendar) 
 	{
 		String userInput; //to represent userInput and allow for String manipulation
-		
+
 		System.out.println("Please enter a brief description about this event:");
 		userInput = scanner.nextLine();
 		calendar.setComment(userInput);
@@ -131,6 +151,12 @@ public class iCalendarDriver
 		String userInput = scanner.nextLine();
 		calendar.setLocation(userInput);
 	}
+	/*
+	 * METHOD: Gets GEO field from user
+	 * 
+	 * @param scanner for user input from stdin
+	 * @param the calendar objefct
+	 */
 	public static void getGEO(Scanner scanner, Calendar calendar) 
 	{
 		float latDeg = -100;
@@ -139,6 +165,8 @@ public class iCalendarDriver
 		float lonDeg = -200;
 		float lonMin = -100;
 		float lonSec = -100;
+		//init variables to be able to entire while's
+		
 		while (latDeg < -90 || latDeg > 90) {
 			System.out.println("Enter latitude degrees: (-90 to 90)");
     		latDeg = scanner.nextInt(); //reads user's input directly from keyboard - trims off whitespace
@@ -199,26 +227,28 @@ public class iCalendarDriver
 		String userInput = "";
 		boolean checker = false;
 		
-		while(checker==false){
+		while(checker==false) {
 			System.out.println("Please enter the day that you want this event to start at: (yyyymmdd)");
 			eventDay = scanner.nextLine();
 			checker = eventDay.matches("[0-9]+");
 			if(checker==true && eventDay.length()==8){
 				userInput = userInput+eventDay;
-			}else{
+			}
+			else {
 				checker=false;
 				System.out.println("Please follow number format in the parentheses");
 			}
 		}//end while
 		checker=false;
 		userInput=userInput+"T";
-		while(checker==false){
+		while(checker==false) {
 			System.out.println("Please enter this event's starting time: (HHmmss)");
 			eventTime = scanner.nextLine();
 			checker = eventTime.matches("[0-9]+");
 			if(checker==true && eventTime.length()==6){
 				userInput = userInput+eventTime;
-			}else{
+			}
+			else {
 				checker=false;
 				System.out.println("Please follow number format in the parentheses");
 			}
@@ -235,31 +265,33 @@ public class iCalendarDriver
 	 */
 	public static void getDateTimeEnd(Scanner scanner, Calendar calendar) 
 	{
-		String eventDay; //to represent user input - for String manipulation
+		String eventDay;
 		String eventTime;
 		String userInput = "";
 		boolean checker = false;
 		
-		while(checker==false){
+		while(checker==false) {
 			System.out.println("Please enter the day that you want this event to end at: (yyyymmdd)");
 			eventDay = scanner.nextLine();
 			checker = eventDay.matches("[0-9]+");
-			if(checker==true && eventDay.length()==8){
+			if(checker==true && eventDay.length()==8) {
 				userInput = userInput+eventDay;
-			}else{
+			}
+			else {
 				checker=false;
 				System.out.println("Please follow number format in the parentheses");
 			}
 		}//end while
 		checker=false;
 		userInput=userInput+"T";
-		while(checker==false){
+		while(checker==false) {
 			System.out.println("Please enter this event's ending time: (HHmmss)");
 			eventTime = scanner.nextLine();
 			checker = eventTime.matches("[0-9]+");
-			if(checker==true && eventTime.length()==6){
+			if(checker==true && eventTime.length()==6) {
 				userInput = userInput+eventTime;
-			}else{
+			}
+			else {
 				checker=false;
 				System.out.println("Please follow number format in the parentheses");
 			}
@@ -281,6 +313,11 @@ public class iCalendarDriver
 		String[] GMTnegatives; //to represent the negative GMT timezones
 		
 		System.out.println("What is the timezone (GMT) for this event?:");
+		Object[] choice = {"GMT +12:00", "GMT +11:30", "GMT +11:00", "GMT +10:30", "GMT +10:00", "GMT +09:30", "GMT +09:00", "GMT +08:00", "GMT +07:00", "GMT +06:30", "GMT +06:00", "GMT +05:30", "GMT +05:00", "GMT +04:00", "GMT +03:00", "GMT +02:00", "GMT +01:00", "GMT","GMT -01:00","GMT -02:00", "GMT -03:00", "GMT -03:30", "GMT -04:00", "GMT -05:00", "GMT -06:00", "GMT -07:00", "GMT -08:00", "GMT -08:30", "GMT -09:00", "GMT -09:30", "GMT -10:00", "GMT -11:00", "GMT -12:00"};
+		String user = (String)JOptionPane.showInputDialog(null, "Please select a timezone","Timezone Selection",JOptionPane.PLAIN_MESSAGE, null, choice,"GMT");
+		//Using a dropdown menu to make it easier on the user.
+		//probably use a switch case? I dunno the best way to implement
+		
 		
 		//I think we will loop through our GMT timezones to show the user what to input
 		

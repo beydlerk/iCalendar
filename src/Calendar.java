@@ -15,6 +15,7 @@ public class Calendar
 
 	private String version; 						//version data field
 	private String classification; 						//version data field
+	private String eventname;
 	private String comment; 						//comment data field
 	private String location;					 	//geo location data field
 	private String GEO;
@@ -46,6 +47,13 @@ public class Calendar
 
 	public void setClassification(String classification) {
 		this.classification = classification;
+	}
+	public void setEventname(String eventname) {
+		this.eventname = eventname;
+	}
+	
+	public String getEventname() {
+		return eventname;
 	}
 
 	public String getComment() {
@@ -128,7 +136,7 @@ public class Calendar
       		bw.newLine();
       		bw.write("BEGIN:VEVENT");
       		bw.newLine();
-      		bw.write("SUMMARY:eventname"); //this is event name!
+      		bw.write("SUMMARY:" + eventname); //this is event name!
       		bw.newLine();
       		bw.write("CLASSIFICATION:" + classification);
       		bw.newLine();
@@ -138,9 +146,9 @@ public class Calendar
       		bw.newLine();
       		bw.write("GEO:" + GEO);
       		bw.newLine();
-      		bw.write("DTSTART:20160309T194500Z"); // in GMT
+      		bw.write("DTSTART:" + DSTART); // in GMT
       		bw.newLine();
-      		bw.write("DTEND:20160310T000000Z"); // in GMT
+      		bw.write("DTEND:" + DEND); // in GMT
       		bw.newLine();
       		bw.write("TIMEZONE:Pacific/Honolulu"); //GMT -10:00
       		bw.newLine();
