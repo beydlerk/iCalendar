@@ -1,9 +1,9 @@
 /**
  *The driver class for the Team Dois iCalendar. 
  * 
- * @author Kevin Beydler, Chansen, Conner
+ * @author Kevin Beydler, Chansen H, Conner H
  * @version ICS 314
- * @date 2/16/2016
+ * @date 3/9/2016
  **/
 
 //Import Preprocesser Directives
@@ -51,6 +51,8 @@ public class iCalendarDriver
 	         getGEO(scanner, calendar);
 	         getDateTimeStart(scanner, calendar);	//To get the DATETIMESTART field
 	         getDateTimeEnd(scanner, calendar); 	//To get the DATETIMEEND field
+	         //getDateTimeStart(scanner, calendar);	//To get the DATETIMESTART field
+	         //getDateTimeEnd(scanner, calendar); 	//To get the DATETIMEEND field
 	         //getTimeZone(scanner, calendar);	//To get the TIMEZONE field
 	         
 	         createFile(file, calendar);		//To finally create the .ics file with the data from the user
@@ -146,11 +148,14 @@ public class iCalendarDriver
 	 * @param the calendar object
 	 */
 	public static void getLocation(Scanner scanner, Calendar calendar)
+//Updated upstream
 	{
 		System.out.println("Please enter a location for this event:");
 		String userInput = scanner.nextLine();
 		calendar.setLocation(userInput);
 	}
+	
+	
 	/*
 	 * METHOD: Gets GEO field from user
 	 * 
@@ -159,13 +164,13 @@ public class iCalendarDriver
 	 */
 	public static void getGEO(Scanner scanner, Calendar calendar) 
 	{
+		//variables
 		float latDeg = -100;
 		float latMin = -100;
 		float latSec = -100;
 		float lonDeg = -200;
 		float lonMin = -100;
 		float lonSec = -100;
-		//init variables to be able to entire while's
 		
 		while (latDeg < -90 || latDeg > 90) {
 			System.out.println("Enter latitude degrees: (-90 to 90)");

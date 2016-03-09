@@ -3,7 +3,7 @@
  * 
  * @author Kevin Beydler, Chansen Hesia, Conner Higashino
  * @version ICS 314
- * @date 2/27/2016
+ * @date 3/9/2016
  **/
 
 //Import Preprocesser Directives
@@ -48,6 +48,15 @@ public class CalendarTestCases
 	}
 	
 	@Test
+	public final void testGetGEO() 
+	{
+		Calendar calendarTest8 = new Calendar();
+		assertEquals(null,calendarTest8.getGEO());
+	
+		assertNotEquals("177.110101;-12.221553",calendarTest8.getGEO());
+	}
+	
+	@Test
 	public final void testGetCommentary() 
 	{
 		Calendar calendarTest4 = new Calendar();
@@ -88,5 +97,4 @@ public class CalendarTestCases
 		
 	}
 
-	
 }
