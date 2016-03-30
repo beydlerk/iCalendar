@@ -139,6 +139,31 @@ public class iCalendarDriver
 		System.out.println("Please enter a brief description about this event:");
 		userInput = scanner.nextLine();
 		calendar.setComment(userInput);
+		
+		//Halverside Distance Forumula (We can maybe use this to calculate the distance for our two event files)
+		
+		/*
+		 * 
+		 * 
+        double a = Math.pow(Math.sin((x2-x1)/2), 2)
+                 + Math.cos(x1) * Math.cos(x2) * Math.pow(Math.sin((y2-y1)/2), 2);
+
+        // great circle distance in radians
+        double angle2 = 2 * Math.asin(Math.min(1, Math.sqrt(a)));
+
+        // convert back to degrees
+        angle2 = Math.toDegrees(angle2);
+
+        // each degree on a great circle of Earth is 60 nautical miles
+        double distance2 = 60 * angle2;
+
+        System.out.println(distance2 + " nautical miles");
+		 * 
+		 */
+		
+		
+		
+		
 	}
 	
 	/*
@@ -357,5 +382,47 @@ public class iCalendarDriver
     }
     System.out.println("The file: " + file + " has successfully been created!");
   }
-}
 //closes iCalendarDriver.java class
+
+/**
+ * scans the event file's content (need to scan 2 different events to get both locations for calculation)
+ * 
+ * @param args represents the file input/output from user
+ */
+
+private void readFromFile(String[] args) throws FileNotFoundException 
+{
+	   //declares and initializes the new file object to argument 1 (input file) from user
+	
+	String fileOne = "eventOne.ics";
+	String fileTwo = "eventTwo.ics";
+	
+   File FileOne = new File(fileOne);
+   File FileTwo = new File(fileTwo);
+   
+   //reads each line of the .ics event files
+   String strLine = new String("");
+   
+   Scanner fr1 = new Scanner(fileOne);  
+   Scanner fr2 = new Scanner(fileOne); 
+   
+   
+   
+   //loops until last line of ics file
+   while(fr1.hasNextLine()) {
+      strLine = fr1.nextLine();
+   }//close while
+   
+   //loops until last line of ics file
+   while(fr2.hasNextLine()) {
+      strLine = fr2.nextLine();
+   }//close while
+   
+   
+   fr1.close();
+   fr2.close();
+}//close readFromFile() method
+
+
+
+}//closes class 
