@@ -446,11 +446,30 @@ private void readFromFile(String[] args) throws FileNotFoundException
    //loops until last line of ics file
    while(fr1.hasNextLine()) {
       strLine = fr1.nextLine();
+      if(strLine[0]=='G'){
+      	string[] split = strLine.split(':');
+      	string numString= split[1];
+      	string[] split2= numString.split(';');
+      	string one = split2[0];
+      	string two = split2[1];
+      	double lat = Double.parseDouble(one);
+      	double lon = Double.parseDouble(two);
+      	
+      }
    }//close while
    
    //loops until last line of ics file
    while(fr2.hasNextLine()) {
       strLine = fr2.nextLine();
+            if(strLine[0]=='G'){
+      	string[] split = strLine.split(':');
+      	string numString= split[1];
+      	string[] split2= numString.split(';');
+      	string one = split2[0];
+      	string two = split2[1];
+      	double lat = Double.parseDouble(one);
+      	double lon = Double.parseDouble(two);
+            }
    }//close while
    
    
