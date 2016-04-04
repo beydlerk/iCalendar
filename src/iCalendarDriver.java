@@ -424,7 +424,45 @@ public class iCalendarDriver
  * 
  * @param args represents the file input/output from user
  */
-
+ public String[] sortEventLog(String[] eventL) throws FileNotFoundException{ //sorts .ics event files by time
+	 
+	 String eventTime1="";
+	 String eventTime2="";
+	 int i;
+	 String[] eventList= eventL;
+	 for(i=0; i<eventList.length;i++){
+		 	String f1  = eventList[i]; //whatever.ics
+			String f2 = eventList[i+1];
+			File file1 = new File(f1);
+			File file2 = new File(f2);
+			Scanner eventOne= new Scanner(file1);
+			Scanner eventTwo= new Scanner(file2);
+			while(eventOne.hasNextLine()&&eventTwo.hasNextLine()){
+				String first = eventOne.nextLine();
+				String second = eventTwo.nextLine();
+				if(first.charAt(3)=='T'){//finds the datetime start time line
+					String[] temp = first.split(":");
+					String[] time1 = temp[1].split("T");	
+					eventTime1 = time1[0];
+					eventTime1 = eventTime1.replaceFirst(String.valueOf(eventTime1.charAt(6)), "");//gets only the timestamp
+					temp = second.split(":");
+					String[] time2 = temp[1].split("T");
+					eventTime2= time2[0];
+					eventTime2 = eventTime2.replaceFirst(String.valueOf(eventTime2.charAt(6)), "");//gets only the timestamp
+				}
+				
+			}
+			int t1= Integer.parseInt(eventTime1);
+			int t2= Integer.parseInt(eventTime2);
+			if(t2<t1){
+				String temp = eventList[i];
+				eventList[i]= eventList[i+1];
+				eventList[i+1] = temp;
+				i=0; //starts over from the beginning if a string gets sorted.
+			}
+	 }
+	 return eventList;
+ }
 private void readFromFile(String[] args) throws FileNotFoundException 
 {
 	   //declares and initializes the new file object to argument 1 (input file) from user
