@@ -463,58 +463,63 @@ public class iCalendarDriver
 	 }
 	 return eventList;
  }
-private void readFromFile(String[] args) throws FileNotFoundException 
+private void readFromFile(String[] eventList) throws FileNotFoundException, IOException 
 {
-	   //declares and initializes the new file object to argument 1 (input file) from user
+	String strLine="";
+	double lat1=0;
+	double lon1=0;
+	double lat2=0;
+	double lon2=0;
 	
-	String fileOne = "eventOne.ics";
-	String fileTwo = "eventTwo.ics";
-	
-   File FileOne = new File(fileOne);
-   File FileTwo = new File(fileTwo);
-   
-   //reads each line of the .ics event files
-   String strLine = new String("");
-   
-   Scanner fr1 = new Scanner(fileOne);  
-   Scanner fr2 = new Scanner(fileOne); 
-   
-   
-   
-   //loops until last line of ics file
-   while(fr1.hasNextLine()) {
-      strLine = fr1.nextLine();
-      if(strLine[0]=='G'){
-      	string[] split = strLine.split(':');
-      	string numString= split[1];
-      	string[] split2= numString.split(';');
-      	string one = split2[0];
-      	string two = split2[1];
-      	double lat = Double.parseDouble(one);
-      	double lon = Double.parseDouble(two);
+	for(int i=0; i<eventList.length;i++){
+		String f1  = eventList[i]; //whatever.ics
+		String f2 = eventList[i+1];
+		File file1 = new File(f1);
+		File file2 = new File(f2);
+		Scanner eventOne= new Scanner(file1);
+		Scanner eventTwo= new Scanner(file2);
+		
+		   while(eventOne.hasNextLine()) {
+      strLine = eventOne.nextLine();
+      if(strLine.charAt(0)=='G'){
+      	String[] split = strLine.split(":");
+      	String numString= split[1];
+      	String[] split2= numString.split(";");
+      	String one = split2[0];
+      	String two = split2[1];
+      	 lat1 = Double.parseDouble(one);
+      	 lon1 = Double.parseDouble(two);
       	
       }
    }//close while
    
-   //loops until last line of ics file
-   while(fr2.hasNextLine()) {
-      strLine = fr2.nextLine();
-            if(strLine[0]=='G'){
-      	string[] split = strLine.split(':');
-      	string numString= split[1];
-      	string[] split2= numString.split(';');
-      	string one = split2[0];
-      	string two = split2[1];
-      	double lat = Double.parseDouble(one);
-      	double lon = Double.parseDouble(two);
-            }
-   }//close while
+		   while(eventTwo.hasNextLine()) {
+			      strLine = eventTwo.nextLine();
+			      if(strLine.charAt(0)=='G'){
+			      	String[] split = strLine.split(":");
+			      	String numString= split[1];
+			      	String[] split2= numString.split(";");
+			      	String one = split2[0];
+			      	String two = split2[1];
+			      	 lat2 = Double.parseDouble(one);
+			      	 lon2 = Double.parseDouble(two);
+			      	
+			      }
+			   }//close while
+
+			double Radius= 6372797.560856;
+	      	double radLat1= Math.toRadians(lat1);
+	      	double radLat2= Math.toRadians(lat2);
+	      	double radLat= Math.toRadians((lat2-lat1));
+	      	double radLon= Math.toRadians((lon2-lon1));
+	      	double angle = Math.sin(radLat/2)*Math.sin(radLat/2)+Math.cos(radLat1)*Math.cos(radLat2)*Math.sin(radLon/2)*Math.sin(radLon/2);
+	      	double distance = 2 * Math.asin(Math.sqrt(angle))*Radius;
+	      	String eventValue= String.valueOf(distance); //String holding the distance value between 2 events
+	      	BufferedWriter writer = new BufferedWriter(new FileWriter(eventList[i], true));//stuck here
+	      	//next goal is to figure out how to access and modify comment line
+	}
    
-   
-   fr1.close();
-   fr2.close();
+
 }//close readFromFile() method
-
-
 
 }//closes class 
