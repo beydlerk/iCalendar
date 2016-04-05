@@ -2,7 +2,7 @@
  * Calendar Object class for the .ics file parameters TEAM Dois
  * 
  * @author Kevin Beydler
- * @version 3/9/2016
+ * @version 4/4/2016
  *
  */
 
@@ -22,9 +22,6 @@ public class Calendar
 	private String DSTART; 							//date time start data field
 	private String DEND; 							//date time end data field
 	private String timeZone; 						//timezone data field
-	
-	private String[] events;  						//string of event names - thinking that the made events will be stored here
-	
 	private final static String DATETIME_FORMAT = "yyyyMMdd'T'HHmmss"; 	//Date & Time formatting data field
 	
 	/*
