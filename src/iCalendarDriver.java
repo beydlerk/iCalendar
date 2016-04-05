@@ -337,6 +337,7 @@ public class iCalendarDriver
 		
 		while(checker==false) {
 			System.out.println("Please enter the day that you want this event to end at: (yyyymmdd)");
+			userInput.toString();
 			eventDay = scanner.nextLine();
 			checker = eventDay.matches("[0-9]+");
 			if(checker==true && eventDay.length()==8) {
@@ -374,6 +375,9 @@ public class iCalendarDriver
 	public static void getTimeZone(Scanner scanner, Calendar calendar) 
 	{
 		String userInput; //to represent the user's input for String manipulation
+		
+		String g1, g2;
+		
 		String[] GMTpositives; //to represent the positive GMT timezones
 		String[] GMTnegatives; //to represent the negative GMT timezones
 		
@@ -385,7 +389,6 @@ public class iCalendarDriver
 		
 		
 		//I think we will loop through our GMT timezones to show the user what to input
-		
 		
 		//read in user's input
 	
@@ -428,7 +431,8 @@ public class iCalendarDriver
 	 
 	 String eventTime1="";
 	 String eventTime2="";
-	 int i;
+	 
+	 int i; //loop count
 	 String[] eventList= eventL;
 	 for(i=0; i<eventList.length;i++){
 		 	String f1  = eventList[i]; //whatever.ics
@@ -437,7 +441,8 @@ public class iCalendarDriver
 			File file2 = new File(f2);
 			Scanner eventOne= new Scanner(file1);
 			Scanner eventTwo= new Scanner(file2);
-			while(eventOne.hasNextLine()&&eventTwo.hasNextLine()){
+			while(eventOne.hasNextLine()&&eventTwo.hasNextLine())
+			{
 				String first = eventOne.nextLine();
 				String second = eventTwo.nextLine();
 				if(first.charAt(3)=='T'){//finds the datetime start time line
@@ -454,7 +459,8 @@ public class iCalendarDriver
 			}
 			int t1= Integer.parseInt(eventTime1);
 			int t2= Integer.parseInt(eventTime2);
-			if(t2<t1){
+			if(t2<t1)
+			{
 				String temp = eventList[i];
 				eventList[i]= eventList[i+1];
 				eventList[i+1] = temp;
@@ -463,6 +469,12 @@ public class iCalendarDriver
 	 }
 	 return eventList;
  }
+ 
+ /**
+  * scans the event file's content (need to scan 2 different events to get both locations for calculation)
+  * 
+  * @param args represents the file input/output from user
+  */
 private void readFromFile(String[] eventList) throws FileNotFoundException, IOException 
 {
 	String strLine="";
@@ -479,9 +491,11 @@ private void readFromFile(String[] eventList) throws FileNotFoundException, IOEx
 		Scanner eventOne= new Scanner(file1);
 		Scanner eventTwo= new Scanner(file2);
 		
-		   while(eventOne.hasNextLine()) {
+		   while(eventOne.hasNextLine()) 
+		   {
       strLine = eventOne.nextLine();
-      if(strLine.charAt(0)=='G'){
+      if(strLine.charAt(0)=='G')
+      {
       	String[] split = strLine.split(":");
       	String numString= split[1];
       	String[] split2= numString.split(";");
@@ -521,5 +535,43 @@ private void readFromFile(String[] eventList) throws FileNotFoundException, IOEx
    
 
 }//close readFromFile() method
+
+
+/**
+ * writes over the event file's content (need to write over 2 different events to write in the circle distance)
+ * 
+ * @param args represents the file input/output from user
+ */
+private void writeToFile(String[] eventList) throws FileNotFoundException, IOException 
+{
+	
+	String file1 = "";
+	String file2 = "";
+	
+	PrintWriter fileWriter = null;
+	PrintWriter fileWriter2 = null;
+	
+    try 
+    {
+       //attempts to establish a successful connection with the fileWriters and files themselves
+       fileWriter = new PrintWriter(file1);
+       fileWriter2 = new PrintWriter(file2);
+    }//close try
+    
+    catch (FileNotFoundException exceptionFNFE) 
+    {
+       JOptionPane.showMessageDialog(null, "ERROR: Alterations could not be saved!");
+    }//close catch
+    
+    /*
+     * Can we write into a file while the program is running?
+     */
+
+    //closes the PrintWriter objects
+    fileWriter.close(); 
+    fileWriter2.close(); 
+    
+ }//close writeToFile() method
+
 
 }//closes class 

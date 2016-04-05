@@ -85,4 +85,14 @@ public class iCalendarDriverTestCases
 		Scanner testInput5 = new Scanner(System.in);
 		assertEquals(".ics", iCalendarDriver.getFile(testInput5));
 	}
+	
+	
+	@Test
+	public final void testsortEventLog()
+	{
+		Scanner testInput6 = new Scanner(System.in);
+		
+		assertEquals(".ics", iCalendarDriver.getFile(testInput6));
+	}
+	
 }
