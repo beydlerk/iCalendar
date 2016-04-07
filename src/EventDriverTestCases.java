@@ -8,6 +8,8 @@
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
+
 import org.junit.Test;
 
 public class EventDriverTestCases 
@@ -19,7 +21,7 @@ public class EventDriverTestCases
 	}
 
 	@Test
-	public final void testMain() 
+	public final void testMain() throws IOException 
 	{
 	EventsDriver.main(null);//see if the main() works
 	}

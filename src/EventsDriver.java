@@ -21,39 +21,56 @@ public class EventsDriver
 {
 	
 	// might need an array of Strings to store contents/fileNames/content from files
-	String events[];
 	
-	static String file1 = "event1.ics"; //for event 1
-	static String file2 = "event2.ics"; //for event 2
-	
-	
-	public static void main(String[] args) 
+	public static void main(String[] args) throws IOException 
 	{
-		/*
-		* Data fields for main() driver
-		*/
+		String fname;
+		File tfile;
+		boolean checker = false;
+		char flag = 'n';
 		Scanner scanner = new Scanner(System.in); //for UI interaction by retrieving input from user's keyboard
-		
-		 file1 = getFile(scanner);		//To get the name of the file
-		 file2 = getFile(scanner);		//To get the name of the file
-		 
-		 
-		 /*
-		  * CALL THESE WHEN READY
-		  */
-		 
-		 //readFromFile(String[] eventList);
-		 //sortEventLog(String[] eventL);
-		 //greatCircleComment(Scanner scanner, Calendar calendar);
-		 //writeToFile(String[] eventList);
-		 
-		 
+		Events events = new Events();
+		while(checker == false) {
+			fname = getFile(scanner);
+			tfile = new File(fname);
+			if(tfile.exists()) {
+				checker = true;
+				events.setname(fname);
+				events.setdate(tfile);
+				events.settime(tfile);
+				events.increasesize();
+			}
+			else {
+				checker = false;
+				System.out.println("That file doesn't exist! Try again please");
+			}
+		}
+		checker = false;
+		do {
+			while (checker == false) {
+				System.out.println("Next file, here we go!");
+				fname = getFile(scanner);
+				tfile = new File(fname);
+				if (tfile.exists()) {
+					checker = true;
+					events.setname(fname);
+					events.settime(tfile);
+					events.increasesize();
+					System.out.println("Would you like to add another event file?");
+					System.out.println("Y to add another file, any other key to continue");
+					flag = scanner.next().charAt(0);
+				}
+				else {
+					checker = false;
+					System.out.println("That file doesn't exist! Try again please");
+				}
+			}
+		} while (flag == 'y' || flag == 'Y');
+		events.sorttime();
+		System.out.println(events.gettime(0));
+		System.out.println(events.gettime(1));
 	}//close main()
 	
-	private static String getFile(Scanner scanner) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	/**
 	 * METHOD: Gets COMMENT field from user
@@ -61,7 +78,29 @@ public class EventsDriver
 	 * @param the scanner for user's input from keyboard
 	 * @param the calendar object
 	 */
-	
+	public static String getFile(Scanner scanner)
+	{
+		String file; //prepares to create the .ics file
+		String appendICS; //used for properly appending .ics after the file's name
+		
+		//prompts user for the name of the file
+		System.out.println("Enter filename: ");
+		//This will be the name of the .ics file generated from this program at the end. :)
+		
+		//takes the file and trims the whitespace from it (if there's any whitespace)
+		file = scanner.nextLine().trim();
+		 
+		//conditional if the file has nothing after its name
+		if (file.lastIndexOf(".") == -1)		//appends the ".ics" if it doesn't have it already
+			file = file + ".ics";
+		else 
+		{
+			appendICS = file.substring(file.lastIndexOf(".") + 1, file.length());
+			if (!appendICS.equalsIgnoreCase("ics"))
+				file = file + ".ics";
+		}
+		return file;
+	}
 	public static void greatCircleComment(Scanner scanner, Calendar calendar) 
 	{
 		String userInput = ""; //to represent userInput and allow for String manipulation
@@ -78,48 +117,6 @@ public class EventsDriver
 	 * 
 	 * @param args represents the file input/output from user
 	 */
-	 public String[] sortEventLog(String[] eventL) throws FileNotFoundException{ //sorts .ics event files by time
-		 
-		 String eventTime1="";
-		 String eventTime2="";
-		 
-		 int i; //loop count
-		 String[] eventList= eventL;
-		 for(i=0; i<eventList.length;i++){
-			 	String f1  = eventList[i]; //whatever.ics
-				String f2 = eventList[i+1];
-				File file1 = new File(f1);
-				File file2 = new File(f2);
-				Scanner eventOne= new Scanner(file1);
-				Scanner eventTwo= new Scanner(file2);
-				while(eventOne.hasNextLine()&&eventTwo.hasNextLine())
-				{
-					String first = eventOne.nextLine();
-					String second = eventTwo.nextLine();
-					if(first.charAt(3)=='T'){//finds the datetime start time line
-						String[] temp = first.split(":");
-						String[] time1 = temp[1].split("T");	
-						eventTime1 = time1[0];
-						eventTime1 = eventTime1.replaceFirst(String.valueOf(eventTime1.charAt(6)), "");//gets only the timestamp
-						temp = second.split(":");
-						String[] time2 = temp[1].split("T");
-						eventTime2= time2[0];
-						eventTime2 = eventTime2.replaceFirst(String.valueOf(eventTime2.charAt(6)), "");//gets only the timestamp
-					}
-					
-				}
-				int t1= Integer.parseInt(eventTime1);
-				int t2= Integer.parseInt(eventTime2);
-				if(t2<t1)
-				{
-					String temp = eventList[i];
-					eventList[i]= eventList[i+1];
-					eventList[i+1] = temp;
-					i=0; //starts over from the beginning if a string gets sorted.
-				}
-		 }
-		 return eventList;
-	 }
 	 
 	 /**
 	  * METHOD: scans the event file's content (need to scan 2 different events to get both locations for calculation)
