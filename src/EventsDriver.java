@@ -27,7 +27,7 @@ public class EventsDriver
 		String fname;
 		File tfile;
 		boolean checker = false;
-		char flag = 'n';
+		String flag;
 		Scanner scanner = new Scanner(System.in); //for UI interaction by retrieving input from user's keyboard
 		Events events = new Events();
 		while(checker == false) {
@@ -46,25 +46,39 @@ public class EventsDriver
 			}
 		}
 		checker = false;
-		System.out.println(events.getdate());
+		boolean have_base = false;
 		do {
+			checker = false;
+			flag = "\0";
 			while (checker == false) {
 				System.out.println("Next file, here we go!");
 				fname = getFile(scanner);
 				tfile = new File(fname);
 				if (tfile.exists()) {
 					if (events.compdate(tfile) == false) {
-						checker = false;
-						System.out.println("Hey, that's on a different day! Sorry, we can't process that. Try again");
+						System.out.println("Hey, that's on a different day! Sorry, we can't process that.");
+						if (have_base == false) {
+							System.out.println("Try again");
+							checker = false;
+						}
+						else {
+							checker = true;
+						}
+					}
+					else if (events.redundant(fname) == true) {
+						System.out.println("Hey, you already input that day!");
+						if (have_base == false) {
+							checker = false;
+						}
+						else {
+							checker = true;
+						}
 					}
 					else {
 						checker = true;
 						events.setname(fname);
 						events.settime(tfile);
 						events.increasesize();
-						System.out.println("Would you like to add another event file?");
-						System.out.println("Y to add another file, any other key to continue");
-						flag = scanner.next().charAt(0);
 					}
 				}
 				else {
@@ -72,9 +86,23 @@ public class EventsDriver
 					System.out.println("That file doesn't exist! Try again please");
 				}
 			}
-		} while (flag == 'y' || flag == 'Y');
+			while (flag.trim().length() == 0) {
+				System.out.println("Would you like to add another event file?");
+				System.out.println("Y to add another file, any other key to continue");
+				String temp = scanner.nextLine();
+				if (temp.trim().length() > 0) {
+					flag = temp.substring(0, 1);
+				}
+				if (temp.trim().length() == 0) {
+					System.out.println("Sorry, I didn't catch that.");
+				}
+			}
+			have_base = true;
+		} while (flag.equals("y") || flag.equals("y"));
 		events.sorttime();
-		System.out.println(events.compgeo(0, 1));
+		//System.out.println(events.getsize());
+		events.editICS();
+		System.out.println("Ding! Finished.");
 	}//close main()
 	
 	public static String getFile(Scanner scanner)
@@ -95,92 +123,4 @@ public class EventsDriver
 		}
 		return file;
 	}
-	public static void greatCircleComment(Scanner scanner, Calendar calendar) 
-	{
-		String userInput = ""; //to represent userInput and allow for String manipulation
-
-		System.out.println("Please enter a brief description about this event:");
-		userInput = scanner.nextLine();
-		
-		System.out.println("Circle's Great distance between the two event files is: ");
-	}
-	
-	
-	/**
-	 * METHOD: scans the event file's content (need to scan 2 different events to get both locations for calculation)
-	 * 
-	 * @param args represents the file input/output from user
-	 */
-	 
-	 /**
-	  * METHOD: scans the event file's content (need to scan 2 different events to get both locations for calculation)
-	  * 
-	  * @param args represents the file input/output from user
-	  */
-	private void readFromFile(String[] eventList) throws FileNotFoundException, IOException 
-	{
-		String strLine="";
-		double lat1=0;
-		double lon1=0;
-		double lat2=0;
-		double lon2=0;
-		
-		for(int i=0; i<eventList.length;i++){
-			String f1  = eventList[i]; //whatever.ics
-			String f2 = eventList[i+1];
-			File file1 = new File(f1);
-			File file2 = new File(f2);
-				   
-				double Radius= 6372797.560856;
-		      	double radLat1= Math.toRadians(lat1);
-		      	double radLat2= Math.toRadians(lat2);
-		      	double radLat= Math.toRadians((lat2-lat1));
-		      	double radLon= Math.toRadians((lon2-lon1));
-		      	double angle = Math.sin(radLat/2)*Math.sin(radLat/2)+Math.cos(radLat1)*Math.cos(radLat2)*Math.sin(radLon/2)*Math.sin(radLon/2);
-		      	double distance = 2 * Math.asin(Math.sqrt(angle))*Radius;
-		      	String eventValue= String.valueOf(distance); //String holding the distance value between 2 events
-		      	BufferedWriter writer = new BufferedWriter(new FileWriter(eventList[i], true));//stuck here
-		      	//next goal is to figure out how to access and modify comment line
-		}
-	   
-
-	}//close readFromFile() method
-
-
-	/**
-	 * METHOD: writes over the event file's content (need to write over 2 different events to write in the circle distance)
-	 * 
-	 * @param args represents the file input/output from user
-	 */
-	private void writeToFile(String[] eventList) throws FileNotFoundException, IOException 
-	{
-		
-		String file1 = "";
-		String file2 = "";
-		
-		PrintWriter fileWriter = null;
-		PrintWriter fileWriter2 = null;
-		
-	    try 
-	    {
-	       //attempts to establish a successful connection with the fileWriters and files themselves
-	       fileWriter = new PrintWriter(file1);
-	       fileWriter2 = new PrintWriter(file2);
-	    }//close try
-	    
-	    catch (FileNotFoundException exceptionFNFE) 
-	    {
-	       JOptionPane.showMessageDialog(null, "ERROR: Alterations could not be saved!");
-	    }//close catch
-	    
-	    /*
-	     * Can we write into a file while the program is running?
-	     */
-
-	    //closes the PrintWriter objects
-	    fileWriter.close(); 
-	    fileWriter2.close(); 
-	    
-	 }//close writeToFile() method
-
 }

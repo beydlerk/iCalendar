@@ -54,6 +54,14 @@ public class Events
 	public int getsize() {
 		return size;
 	}
+	public boolean redundant(String file) {
+		for (int i = 0; i < size; i++) {
+			if (file.equals(filename[i])) {
+				return true;
+			}
+		}
+		return false;
+	}
 	public int readdate(File file) throws IOException {
 		String temp;
 		FileInputStream fs = new FileInputStream(file);
@@ -94,6 +102,7 @@ public class Events
 		latint = Double.parseDouble(lat);
 		lonint = Double.parseDouble(lon);
 		double[] geoinfo = {latint, lonint};
+		br.close();
 		return geoinfo;
 	}
 	public void sorttime() {
@@ -104,7 +113,7 @@ public class Events
 	}
 	public boolean compdate(File file) throws IOException {
 		int newval = readdate(file);
-		System.out.println(newval);
+		//System.out.println(newval);
 		if (newval == date) {
 			return true;
 		}
@@ -112,11 +121,11 @@ public class Events
 			return false;
 		}
 	}
-	public double compgeo(int start, int end) throws IOException {
+	public double compgeo(int start) throws IOException {
 		double Radius= 6372797.560856;
 		File tfile = new File(filename[start]);
       	double[] set1 = readlatlon(tfile);
-      	tfile = new File(filename[end]);
+      	tfile = new File(filename[start+1]);
       	double[] set2 = readlatlon(tfile);
 		double radLat1= Math.toRadians(set1[0]);
       	double radLat2= Math.toRadians(set2[0]);
@@ -124,7 +133,77 @@ public class Events
       	double radLon= Math.toRadians((set2[1]-set1[1]));
       	double angle = Math.sin(radLat/2)*Math.sin(radLat/2)+Math.cos(radLat1)*Math.cos(radLat2)*Math.sin(radLon/2)*Math.sin(radLon/2);
       	double distance = 2 * Math.asin(Math.sqrt(angle))*Radius;
+      	distance = distance/1000;
       	return distance;
+	}
+	public void editICS() throws IOException {
+		String file, ver, event, classif, distance = null, distmile = null, loc, geo, start, end;
+		File reading;
+		FileInputStream fs;
+		BufferedReader br;
+		for (int i = 0; i < size; i++) {
+			file = filename[i];
+			reading = new File(file);
+			fs = new FileInputStream(reading);
+			br = new BufferedReader(new InputStreamReader(fs));
+			br.readLine();
+			ver = br.readLine();
+			br.readLine();
+			event = br.readLine();
+			classif = br.readLine();
+			br.readLine();
+			loc = br.readLine();
+			geo = br.readLine();
+			start = br.readLine();
+			end = br.readLine();			
+			br.close();
+			if (i != size-1) {
+				distance = String.valueOf(compgeo(i));
+				distmile = String.valueOf(compgeo(i)*0.621371);
+			}
+			try 
+			{
+				File writingto = new File(file); //WRITES TO CURRENT DIRECTORY
+				FileWriter fw = new FileWriter(writingto.getAbsoluteFile());
+				BufferedWriter bw = new BufferedWriter(fw);
+				bw.write("BEGIN:VCALENDAR");
+				bw.newLine();
+				bw.write(ver);
+				bw.newLine();
+				bw.write("BEGIN:VEVENT");
+				bw.newLine();
+				bw.write(event);
+				bw.newLine();
+				bw.write(classif);
+				bw.newLine();
+				if (i != size-1) {
+					bw.write("DESCRIPTION:" + distance + " km = " + distmile + " mi");
+				}
+				else {
+					bw.write("DESCRIPTION:This is your last event of the day!");
+				}
+				bw.newLine();
+				bw.write(loc);
+				bw.newLine();
+				bw.write(geo);
+				bw.newLine();
+				bw.write(start); // in GMT
+				bw.newLine();
+				bw.write(end); // in GMT
+				bw.newLine();
+				bw.write("TIMEZONE:Pacific/Honolulu"); //GMT -10:00
+				bw.newLine();
+				bw.write("END:VEVENT");
+				bw.newLine();
+				bw.write("END:VCALENDAR");
+				bw.close();
+				fw.close();
+			}
+			catch(IOException ioe)
+			{
+				System.out.println("ERROR: Could not open file due to Input/Output exception!");
+			}
+		}
 	}
 }
 
