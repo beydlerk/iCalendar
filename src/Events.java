@@ -62,7 +62,7 @@ public class Events
 			br.readLine();
 		}
 		temp = br.readLine();
-		temp = temp.substring(8, 15);
+		temp = temp.substring(8, 16);
 		int save = Integer.parseInt(temp);
 		return save;
 	}
@@ -78,11 +78,53 @@ public class Events
 		int save = Integer.parseInt(temp);
 		return save;
 	}
+	public double[] readlatlon(File file) throws IOException {
+		String temp, lat, lon;
+		double latint, lonint;
+		FileInputStream fs = new FileInputStream(file);
+		BufferedReader br = new BufferedReader(new InputStreamReader(fs));
+		for (int i = 0; i < 7; i++) {
+			br.readLine();
+		}
+		temp = br.readLine();
+		temp = temp.substring(4);
+		String[] parts = temp.split(";");
+		lat = parts[0];
+		lon = parts[1];
+		latint = Double.parseDouble(lat);
+		lonint = Double.parseDouble(lon);
+		double[] geoinfo = {latint, lonint};
+		return geoinfo;
+	}
 	public void sorttime() {
 		mergesort stack = new mergesort();
 		stack.sort(starttime, filename, size);
 		starttime = stack.getarray();
 		filename = stack.getfollow();
+	}
+	public boolean compdate(File file) throws IOException {
+		int newval = readdate(file);
+		System.out.println(newval);
+		if (newval == date) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	public double compgeo(int start, int end) throws IOException {
+		double Radius= 6372797.560856;
+		File tfile = new File(filename[start]);
+      	double[] set1 = readlatlon(tfile);
+      	tfile = new File(filename[end]);
+      	double[] set2 = readlatlon(tfile);
+		double radLat1= Math.toRadians(set1[0]);
+      	double radLat2= Math.toRadians(set2[0]);
+      	double radLat= Math.toRadians((set2[0]-set1[0]));
+      	double radLon= Math.toRadians((set2[1]-set1[1]));
+      	double angle = Math.sin(radLat/2)*Math.sin(radLat/2)+Math.cos(radLat1)*Math.cos(radLat2)*Math.sin(radLon/2)*Math.sin(radLon/2);
+      	double distance = 2 * Math.asin(Math.sqrt(angle))*Radius;
+      	return distance;
 	}
 }
 

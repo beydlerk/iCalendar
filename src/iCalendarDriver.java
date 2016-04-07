@@ -141,63 +141,6 @@ public class iCalendarDriver
 		calendar.setComment(userInput);
 		
 		
-		//Here is what I think we can use to read the two event file's content
-		
-		/*
-		String fileOne = "eventOne.ics";
-		String fileTwo = "eventTwo.ics";
-		
-	   File FileOne = new File(fileOne);
-	   File FileTwo = new File(fileTwo);
-	   
-	   //reads each line of the .ics event files
-	   String strLine = new String("");
-	   
-	   Scanner fr1 = new Scanner(fileOne);  
-	   Scanner fr2 = new Scanner(fileOne); 
-	   
-	   
-	   
-	   //loops until last line of ics file
-	   while(fr1.hasNextLine()) {
-	      strLine = fr1.nextLine();
-	   }//close while
-	   
-	   //loops until last line of ics file
-	   while(fr2.hasNextLine()) {
-	      strLine = fr2.nextLine();
-	   }//close while
-	   
-	   
-	   fr1.close();
-	   fr2.close();
-		*/
-		
-		
-		
-		//Halverside Distance Forumula (We can maybe use this to calculate the distance for our two event files)
-		
-		/*
-		 * 
-		 * 
-        double a = Math.pow(Math.sin((x2-x1)/2), 2)
-                 + Math.cos(x1) * Math.cos(x2) * Math.pow(Math.sin((y2-y1)/2), 2);
-
-        // great circle distance in radians
-        double angle2 = 2 * Math.asin(Math.min(1, Math.sqrt(a)));
-
-        // convert back to degrees
-        angle2 = Math.toDegrees(angle2);
-
-        // each degree on a great circle of Earth is 60 nautical miles
-        double distance2 = 60 * angle2;
-
-        System.out.println(distance2 + " nautical miles");
-		 * 
-		 */
-		
-		System.out.println("Circle's Great distance between the two event files is: ");
-		
 		
 	}
 	
@@ -372,7 +315,7 @@ public class iCalendarDriver
 	 * @param the scanner for user's input from keyboard
 	 * @param the calendar object
 	 */
-	public static void getTimeZone(Scanner scanner, Calendar calendar) 
+	public static void getTimeZone(Scanner scanner, Calendar calendar) //worry bout dis later
 	{
 		String userInput; //to represent the user's input for String manipulation
 		

@@ -46,19 +46,26 @@ public class EventsDriver
 			}
 		}
 		checker = false;
+		System.out.println(events.getdate());
 		do {
 			while (checker == false) {
 				System.out.println("Next file, here we go!");
 				fname = getFile(scanner);
 				tfile = new File(fname);
 				if (tfile.exists()) {
-					checker = true;
-					events.setname(fname);
-					events.settime(tfile);
-					events.increasesize();
-					System.out.println("Would you like to add another event file?");
-					System.out.println("Y to add another file, any other key to continue");
-					flag = scanner.next().charAt(0);
+					if (events.compdate(tfile) == false) {
+						checker = false;
+						System.out.println("Hey, that's on a different day! Sorry, we can't process that. Try again");
+					}
+					else {
+						checker = true;
+						events.setname(fname);
+						events.settime(tfile);
+						events.increasesize();
+						System.out.println("Would you like to add another event file?");
+						System.out.println("Y to add another file, any other key to continue");
+						flag = scanner.next().charAt(0);
+					}
 				}
 				else {
 					checker = false;
@@ -67,30 +74,17 @@ public class EventsDriver
 			}
 		} while (flag == 'y' || flag == 'Y');
 		events.sorttime();
-		System.out.println(events.gettime(0));
-		System.out.println(events.gettime(1));
+		System.out.println(events.compgeo(0, 1));
 	}//close main()
 	
-
-	/**
-	 * METHOD: Gets COMMENT field from user
-	 * 
-	 * @param the scanner for user's input from keyboard
-	 * @param the calendar object
-	 */
 	public static String getFile(Scanner scanner)
 	{
 		String file; //prepares to create the .ics file
 		String appendICS; //used for properly appending .ics after the file's name
 		
-		//prompts user for the name of the file
 		System.out.println("Enter filename: ");
-		//This will be the name of the .ics file generated from this program at the end. :)
-		
-		//takes the file and trims the whitespace from it (if there's any whitespace)
 		file = scanner.nextLine().trim();
 		 
-		//conditional if the file has nothing after its name
 		if (file.lastIndexOf(".") == -1)		//appends the ".ics" if it doesn't have it already
 			file = file + ".ics";
 		else 
@@ -136,39 +130,7 @@ public class EventsDriver
 			String f2 = eventList[i+1];
 			File file1 = new File(f1);
 			File file2 = new File(f2);
-			Scanner eventOne= new Scanner(file1);
-			Scanner eventTwo= new Scanner(file2);
-			
-			   while(eventOne.hasNextLine()) 
-			   {
-	      strLine = eventOne.nextLine();
-	      if(strLine.charAt(0)=='G')
-	      {
-	      	String[] split = strLine.split(":");
-	      	String numString= split[1];
-	      	String[] split2= numString.split(";");
-	      	String one = split2[0];
-	      	String two = split2[1];
-	      	 lat1 = Double.parseDouble(one);
-	      	 lon1 = Double.parseDouble(two);
-	      	
-	      }
-	   }//close while
-	   
-			   while(eventTwo.hasNextLine()) {
-				      strLine = eventTwo.nextLine();
-				      if(strLine.charAt(0)=='G'){
-				      	String[] split = strLine.split(":");
-				      	String numString= split[1];
-				      	String[] split2= numString.split(";");
-				      	String one = split2[0];
-				      	String two = split2[1];
-				      	 lat2 = Double.parseDouble(one);
-				      	 lon2 = Double.parseDouble(two);
-				      	
-				      }
-				   }//close while
-
+				   
 				double Radius= 6372797.560856;
 		      	double radLat1= Math.toRadians(lat1);
 		      	double radLat2= Math.toRadians(lat2);
