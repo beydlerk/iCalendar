@@ -9,6 +9,7 @@
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 import org.junit.Test;
 
@@ -16,7 +17,8 @@ public class EventDriverTestCases
 {
 
 	@Test
-	public void test() {
+	public void test() 
+	{
 		fail("Not yet implemented");
 	}
 
@@ -25,6 +27,5 @@ public class EventDriverTestCases
 	{
 	EventsDriver.main(null);//see if the main() works
 	}
-	
 	
 }
